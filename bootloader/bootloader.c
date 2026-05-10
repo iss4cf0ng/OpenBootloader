@@ -7,11 +7,12 @@
 #define VGA_COLS 80
 #define VGA_ROWS 25
 
-#define COLOR_WHITE_ON_BLACK  0x07
-#define COLOR_GREEN_ON_BLACK  0x0A
-#define COLOR_CYAN_ON_BLACK   0x0B
-#define COLOR_YELLOW_ON_BLACK 0x0E
-#define COLOR_WHITE_ON_BLUE   0x1F
+// Reference: https://grokipedia.com/page/BIOS_color_attributes
+#define COLOR_WHITE_ON_BLACK    0x07
+#define COLOR_GREEN_ON_BLACK    0x0A
+#define COLOR_CYAN_ON_BLACK     0x0B
+#define COLOR_YELLOW_ON_BLACK   0x0E
+#define COLOR_WHITE_ON_BLUE     0x1F
 
 static inline void outb(uint16_t port, uint8_t val)
 {
