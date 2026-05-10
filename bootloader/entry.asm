@@ -12,9 +12,30 @@ extern __bss_end
 global _start
 
 _start:
+    mov [boot_drive_store], dl
 
+    mov si, msg_stage2
+    call print_string
 
-print:
+    cli
+
+    ; call A32 line via port 20
+    in al, 0x92
+    or al, 2
+    out 0x92, al
+
+    ; load GDT
+    lgdt [gdt_descriptor]
+
+    ; Set CR0.PE = 1, entering Protected Mode
+    mov eax, cr0
+    or eax, 1
+    mov cr0, eax
+
+    ; far jump: clear all pipelines and load 32-bit code segment selector
+    jmp 0x08:protected_mode_entry
+
+print_string:
     pusha
 .loop
     lodsb
