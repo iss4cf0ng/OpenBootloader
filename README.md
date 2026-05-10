@@ -1,4 +1,5 @@
-# OpenPetya
-Proof-of-Concept of Petya bootkit.
+# OpenBootloader
+
+Proof-of-Concept of stage2 bootloader.
 
 Still in development...
