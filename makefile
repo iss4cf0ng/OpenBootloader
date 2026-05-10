@@ -36,8 +36,14 @@ $(BUILD)/bootloader.o: $(BL_DIR)/bootloader.c $(BL_DIR)/bootloader.h
 $(BUILD)/stage2.elf: $(BUILD)/entry.o $(BUILD)/bootloader.o
 	$(LD) $(LDFLAGS) -o $@ $^
 
-$(STAGE2): $(BUILD)/stage2.elf
-	objcopy -O binary $< $@
+$(STAGE2): $(BUILD)/entry.o $(BUILD)/bootloader.o
+	# Link stage2 directly to binary
+	$(LD) -m elf_i386 -T $(BL_DIR)/linker.ld -o $@ --oformat binary $^
+	# Pad to 16 sectors (8192 bytes)
+	@size=$$(stat -c%s $@); \
+	if [ $$size -lt 8192 ]; then \
+		dd if=/dev/zero bs=1 count=$$((8192-$$size)) >> $@; \
+	fi
 
 $(DISK_IMG): $(MBR_BIN) $(STAGE2)
 	dd if=/dev/zero of=$@ bs=512 count=2880 2>/dev/null

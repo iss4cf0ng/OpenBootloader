@@ -6,7 +6,7 @@ SECTIONS {
     . = 0x8000;
 
     .text : {
-        *(.text._start)   /* entry.asm 的 _start 必須放第一個 */
+        *(.text._start)
         *(.text)
         *(.text.*)
     }
