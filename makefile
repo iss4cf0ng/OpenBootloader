@@ -51,9 +51,7 @@ $(DISK_IMG): $(MBR_BIN) $(STAGE2)
 	dd if=$(STAGE2) of=$@ seek=1 bs=512 conv=notrunc 2>/dev/null
 
 run: $(DISK_IMG)
-	$(QEMU) -drive file=$(DISK_IMG),format=raw,if=ide -m 32M \
-	        -no-reboot -no-shutdown \
-	        -serial stdio
+	$(QEMU) -drive file=$(DISK_IMG),format=raw,if=ide -m 32M -no-reboot -no-shutdown -serial stdio
 
 clean:
 	rm -rf $(BUILD)

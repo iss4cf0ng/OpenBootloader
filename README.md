@@ -4,6 +4,14 @@ Proof-of-Concept of stage2 bootloader.
 
 Still in development...
 
+# Compile and Run
+
+```bash
+make clean
+make
+make run
+```
+
 # Notes
 
 Notes of studying rootkits and bootkits:
