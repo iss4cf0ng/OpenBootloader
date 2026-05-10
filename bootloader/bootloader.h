@@ -1,7 +1,7 @@
 // bootloader.h
 // Header file
 
-#ifdef BOOTLOADER_H
+#ifndef BOOTLOADER_H
 #define BOOTLOADER_H
 
 typedef unsigned char uint8_t;

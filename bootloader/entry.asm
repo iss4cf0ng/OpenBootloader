@@ -3,7 +3,6 @@
 ; Switch 16-bit Real Mode to 32-bit Protected Mode, call bootloader_main() written in C
 
 [BITS 16]
-[ORG 0x8000]
 
 extern bootloader_main
 extern __bss_start
@@ -37,7 +36,7 @@ _start:
 
 print_string:
     pusha
-.loop
+.loop:
     lodsb
     test al, al
     jz .done
@@ -83,6 +82,7 @@ boot_drive_store: db 0
 msg_stage2: db "Stage2: Entry (16-bit OK)", 0x0D, 0x0A, 0
 
 ; 32-bit Protected Mode
+[BITS 32]
 
 protected_mode_entry:
     mov ax, 0x10
@@ -103,6 +103,6 @@ protected_mode_entry:
 
     movzx eax, byte [boot_drive_store]
 
-.hang
+.hang:
     hlt
     jmp .hang

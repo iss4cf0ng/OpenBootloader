@@ -3,7 +3,7 @@ CC := gcc
 LD := ld
 QEMU := qemu-system-i386
 
-MBR_DIR := MBR_DIR
+MBR_DIR := mbr
 BL_DIR := bootloader
 BUILD := build
 
@@ -24,14 +24,14 @@ dirs:
 	@mkdir -p $(BUILD)
 
 $(MBR_BIN): $(MBR_DIR)/mbr.asm
-	$(NASM) -f bin -o $@ $
+	$(NASM) -f bin -o $@ $<
 	@[ $$(wc -c < $@) -eq 512 ] || (echo "MBR not 512 bytes!" && exit 1)
 
 $(BUILD)/entry.o: $(BL_DIR)/entry.asm
-	$(NASM) -f elf32 -o $@ $
+	$(NASM) -f elf32 -o $@ $<
 
 $(BUILD)/bootloader.o: $(BL_DIR)/bootloader.c $(BL_DIR)/bootloader.h
-	$(CC) $(CFLAGS) -c -o $@ $
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(BUILD)/stage2.elf: $(BUILD)/entry.o $(BUILD)/bootloader.o
 	$(LD) $(LDFLAGS) -o $@ $^
@@ -45,10 +45,10 @@ $(DISK_IMG): $(MBR_BIN) $(STAGE2)
 	dd if=$(STAGE2) of=$@ seek=1 bs=512 conv=notrunc 2>/dev/null
 
 run: $(DISK_IMG)
-	$(QEMU) -drive file=$(DISK_IMG),format=raw,index=0,if=floppy -m 32M -no-reboot
+	$(QEMU) -drive file=$(DISK_IMG),format=raw,if=ide -m 32M -no-reboot
 
 run-debug: $(DISK_IMG)
-	$(QEMU) -drive file=$(DISK_IMG),format=raw,index=0,if=floppy -m 32M -no-reboot -s -S
+	$(QEMU) -drive file=$(DISK_IMG),format=raw,if=ide -m 32M -no-reboot -s -S
 
 clean:
 	rm -rf $(BUILD)
