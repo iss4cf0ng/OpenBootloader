@@ -1,6 +1,6 @@
 # OpenBootloader
 
-Proof-of-Concept of stage2 bootloader.
+Proof-of-Concept of stage2 bootloaders.
 
 Still in development...
 
