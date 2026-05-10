@@ -37,9 +37,9 @@ $(BUILD)/stage2.elf: $(BUILD)/entry.o $(BUILD)/bootloader.o
 	$(LD) $(LDFLAGS) -o $@ $^
 
 $(STAGE2): $(BUILD)/entry.o $(BUILD)/bootloader.o
-	# Link stage2 directly to binary
+	@echo "Linking stage2 as flat binary..."
 	$(LD) -m elf_i386 -T $(BL_DIR)/linker.ld -o $@ --oformat binary $^
-	# Pad to 16 sectors (8192 bytes)
+	# Pad to exactly 16 sectors (16 * 512 bytes = 8192)
 	@size=$$(stat -c%s $@); \
 	if [ $$size -lt 8192 ]; then \
 		dd if=/dev/zero bs=1 count=$$((8192-$$size)) >> $@; \
@@ -51,10 +51,9 @@ $(DISK_IMG): $(MBR_BIN) $(STAGE2)
 	dd if=$(STAGE2) of=$@ seek=1 bs=512 conv=notrunc 2>/dev/null
 
 run: $(DISK_IMG)
-	$(QEMU) -drive file=$(DISK_IMG),format=raw,if=ide -m 32M -no-reboot
-
-run-debug: $(DISK_IMG)
-	$(QEMU) -drive file=$(DISK_IMG),format=raw,if=ide -m 32M -no-reboot -s -S
+	$(QEMU) -drive file=$(DISK_IMG),format=raw,if=ide -m 32M \
+	        -no-reboot -no-shutdown \
+	        -serial stdio
 
 clean:
 	rm -rf $(BUILD)

@@ -168,6 +168,8 @@ void vga_put_hex(uint32_t n)
 
 void bootloader_main(uint32_t boot_drive)
 {
+    vga_clear();
+
     vga_set_color(COLOR_WHITE_ON_BLUE);
     vga_puts("MyBoot v0.1  -  Stage 2 Bootloader (32-bit Protected Mode)");
     vga_set_color(COLOR_WHITE_ON_BLACK);

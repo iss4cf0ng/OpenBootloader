@@ -7,9 +7,9 @@
 [BITS 16]
 [ORG 0x7C00]
 
-STAGE2_LOAD_SEG equ 0x0000
-STAGE2_LOAD_OFF equ 0x8000
-STAGE2_SECTORS equ 16
+STAGE2_LOAD_SEG  equ 0x0000
+STAGE2_LOAD_OFF  equ 0x8000
+STAGE2_SECTORS   equ 16
 STAGE2_START_LBA equ 1
 
 start:
@@ -47,6 +47,12 @@ main:
     cmp al, STAGE2_SECTORS
     jne disk_error
 
+    mov si, msg_ok
+    call print_string
+
+    mov dl, [boot_drive]
+    jmp STAGE2_LOAD_SEG:STAGE2_LOAD_OFF
+
 disk_error:
     mov si, msg_disk_err
     call print_string
@@ -68,14 +74,13 @@ print_string:
     mov bl, 0x07
     int 0x10
     jmp .loop
-
 .done:
     popa
     ret
 
-boot_drive:     db 0
+boot_drive:  db 0
 
-msg_mbr:        db "MBR : Booting...", 0x0D, 0x0A, 0
+msg_mbr:        db "MBR: Booting...", 0x0D, 0x0A, 0
 msg_loading:    db "MBR: Loading Stage2...", 0x0D, 0x0A, 0
 msg_ok:         db "MBR: Stage2 loaded OK, jumping...", 0x0D, 0x0A, 0
 msg_disk_err:   db "MBR: DISK READ ERROR!", 0x0D, 0x0A, 0

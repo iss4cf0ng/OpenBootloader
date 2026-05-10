@@ -102,6 +102,10 @@ protected_mode_entry:
     rep stosd
 
     movzx eax, byte [boot_drive_store]
+    push eax
+    call bootloader_main
+
+    cli
 
 .hang:
     hlt
