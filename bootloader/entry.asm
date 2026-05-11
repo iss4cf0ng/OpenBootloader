@@ -1,4 +1,5 @@
 ; entry.asm
+; Author: https://github.com/iss4cf0ng
 ; Stage 2 entry point
 ; Switch 16-bit Real Mode to 32-bit Protected Mode, call bootloader_main() written in C
 

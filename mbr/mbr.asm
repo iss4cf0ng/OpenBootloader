@@ -1,4 +1,5 @@
 ; mbr.asm
+; Author: https://github.com/iss4cf0ng
 ; MBR (Master Boot Record) code to load the second stage bootloader.
 ; Environment 16-bit Real Mode, BIOS loads this code at 0x7C00
 ; Size: Has to be 512 bytes, while the last two bytes is 0x55AA, the boot signature
