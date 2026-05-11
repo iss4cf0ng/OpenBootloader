@@ -2,6 +2,7 @@
 // Standard libraries are not available, so they have to be purely implemented
 
 #include "bootloader.h"
+#include "keyboard.h"
 
 #define VGA_BASE ((volatile uint16_t *)0xB8000)
 #define VGA_COLS 80
@@ -111,7 +112,24 @@ void vga_putchar(char c)
 {
     volatile uint16_t *vga = VGA_BASE;
 
-    if (c == '\n')
+    if (c == '\b')
+    {
+        if (cursor_col > 0)
+        {
+            cursor_col--;
+        }
+        else if (cursor_row > 0)
+        {
+            cursor_row--;
+            cursor_col = VGA_COLS - 1;
+        }
+
+        vga[cursor_row * VGA_COLS + cursor_col] = ' ' | ((uint16_t)current_color << 8);
+        update_cursor();
+
+        return;
+    }
+    else if (c == '\n')
     {
         cursor_col = 0;
         cursor_row++;
@@ -230,6 +248,16 @@ void bootloader_main(uint32_t boot_drive)
     vga_set_color(COLOR_YELLOW_ON_BLACK);
     vga_puts("\nKernel would start here. System halted.\n");
     vga_set_color(COLOR_WHITE_ON_BLACK);
+
+    vga_putchar('\n');
+
+    char username[64];
+    vga_puts("Username: ");
+    keyboard_readline(username, sizeof(username));
+
+    vga_puts("Hi, ");
+    vga_puts(username);
+    vga_puts("!\n");
 
     __asm__ volatile ("cli\n.Lhang: hlt\njmp .Lhang\n");
     __builtin_unreachable();
