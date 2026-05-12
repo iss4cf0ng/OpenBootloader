@@ -1,8 +1,12 @@
 # OpenBootloader
 
-Proof-of-Concept of stage2 bootloaders.
+OpenBootloader is a Proof-of-Concept of stage2 bootloaders, written in Assembly (NASM) code and C language.
 
-Still in development...
+## How It Works?
+
+<p align="center">
+    <img src="https://iss4cf0ng.github.io/images/article/2026-5-10-OpenBootloader/2.png" width=400/>
+</p>
 
 # Compile and Run
 
