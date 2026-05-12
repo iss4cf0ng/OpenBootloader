@@ -28,3 +28,4 @@ make run
 
 Notes of studying rootkits and bootkits:
 - [\[Boot\] Rootkit And Bootkit](https://iss4cf0ng.github.io/2026/04/28/2026-4-28-RootkitAndBootkit/)
+- [OpenBootloader](https://iss4cf0ng.github.io/2026/05/10/2026-5-10-OpenBootloader/)
