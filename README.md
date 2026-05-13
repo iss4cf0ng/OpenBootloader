@@ -4,7 +4,7 @@ OpenBootloader is a Proof-of-Concept of stage2 bootloaders, written in Assembly 
 
 It is being developed while I am studying rootkits and bootkits. Other complex features will be included in future.
 
-## How It Works?
+## How Does It Work?
 
 <p align="center">
     <img src="https://iss4cf0ng.github.io/images/article/2026-5-10-OpenBootloader/2.png" width=350/>
